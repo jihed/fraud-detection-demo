@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    app: demo-fraud-webapp
+  name: demo-fraud-webapp
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-fraud-webapp
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+      labels:
+        app: demo-fraud-webapp
+    spec:
+      containers:
+      - image: 074661079081.dkr.ecr.us-west-2.amazonaws.com/demo-fraud-webapp:v1
+        imagePullPolicy: Always
+        name: demo
+        ports:
+        - containerPort: 5656
+          hostPort: 5656
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      hostname: demo
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status: {}
