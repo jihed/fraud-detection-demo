@@ -33,15 +33,14 @@ import java.util.Properties;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 
 public class TransactionsSource {
 
   public static SourceFunction<String> createTransactionsSource(Config config) {
 
     String sourceType = config.get(TRANSACTIONS_SOURCE);
-    TransactionsSource.Type transactionsSourceType =
-        TransactionsSource.Type.valueOf(sourceType.toUpperCase());
+    TransactionsSource.Type transactionsSourceType = TransactionsSource.Type.valueOf(sourceType.toUpperCase());
 
     int transactionsPerSecond = config.get(RECORDS_PER_SECOND);
 
@@ -49,8 +48,8 @@ public class TransactionsSource {
       case KAFKA:
         Properties kafkaProps = KafkaUtils.initConsumerProperties(config);
         String transactionsTopic = config.get(DATA_TOPIC);
-        FlinkKafkaConsumer011<String> kafkaConsumer =
-            new FlinkKafkaConsumer011<>(transactionsTopic, new SimpleStringSchema(), kafkaProps);
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(transactionsTopic,
+            new SimpleStringSchema(), kafkaProps);
         kafkaConsumer.setStartFromLatest();
         return kafkaConsumer;
       default:
