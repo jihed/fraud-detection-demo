@@ -4,8 +4,8 @@ metadata:
   namespace: demo
   name: flink-fraud-demo
 spec:
-  image: 074661079081.dkr.ecr.us-west-2.amazonaws.com/flink-job-fraud-demo:v2
-  flinkVersion: v1_16
+  image: 074661079081.dkr.ecr.us-west-2.amazonaws.com/flink-job-fraud-demo:w1.15v7
+  flinkVersion: v1_15
   flinkConfiguration:
     taskmanager.numberOfTaskSlots: "1"
   serviceAccount: flink
@@ -19,7 +19,7 @@ spec:
       cpu: 1
   mode: native
   job:
-    jarURI: local:///opt/flink/usrlib/dynamic-fraud-detection-demo-deploy.jar
+    jarURI: local:///opt/flink/usrlib/job.jar
     parallelism: 2
     upgradeMode: stateless
     state: running
